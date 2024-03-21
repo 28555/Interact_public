@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Math Game</title>
+    <style>
+        .main {
+            width: 600px;
+            height: 800px;
+            border: 1px solid green;
+        }
+        .top-bar, .quiz, .play {
+            margin: 10px 0;
+        }
+        .top-bar {
+            height: 100px;
+            background-color: white;
+            color: orange;
+            text-align: center;
+            font-size: 50px;
+        }
+        .quiz {
+            height: 150px;
+            background-color: white;
+            color: blue;
+            text-align: center;
+            font-size: 40px;
+        }
+        .play {
+            height: 800px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .play button {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            border: none;
+            background-size: cover;
+            background-position: center;
+        }
+        /* 新增的Enter按钮样式 */
+        .play .enter {
+            background: url('images/enter.png');
+        }
+
+        button:active {
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<script>
+    // 当文档加载完成时执行
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取所有数字按钮和显示区域
+        var buttons = document.querySelectorAll('.play button');
+        var userAnswer = ''; // 用户的答案
+        var buttons = document.querySelectorAll('.play button:not(.enter)');
+        var enterButton = document.querySelector('.play .enter'); // Enter按钮
+        var quiz = document.querySelector('.quiz');
+        var topBar = document.querySelector('.top-bar');
+
+        // 为每个按钮添加点击事件
+        // 为数字按钮添加点击事件
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // 读取算式和用户点击的数字
+                var equation = quiz.textContent.split(' = ')[0];
+                var userAnswer = this.style.backgroundImage.replace(/^.*?(\d+)\.png.*$/, '$1');
+                var correctAnswer = eval(equation).toString();
+
+                // 检验答案是否正确
+                if(userAnswer === correctAnswer) {
+                    // 如果正确，更新top-bar为绿色的“Correct!”
+                    topBar.textContent = 'Correct!';
+                    topBar.style.color = 'green';
+                } else {
+                    // 如果错误，更新top-bar为红色的“Error!”
+                    topBar.textContent = 'Error!';
+                    topBar.style.color = 'red';
+                }
+                var number = this.style.backgroundImage.replace(/^.*?(\d+)\.png.*$/, '$1');
+                userAnswer += number; // 将点击的数字添加到答案中
+            });
+        });
+
+        // 为Enter按钮添加点击事件
+        enterButton.addEventListener('click', function() {
+            var equation = quiz.textContent.split(' = ')[0];
+            var correctAnswer = eval(equation).toString();
+
+            // 检验答案是否正确
+            if(userAnswer === correctAnswer) {
+                topBar.textContent = 'Correct!';
+                topBar.style.color = 'green';
+            } else {
+                topBar.textContent = 'Error!';
+                topBar.style.color = 'red';
+            }
+            userAnswer = ''; // 重置用户答案
+        });
+    });
+</script>
+<body>
+<div class="main">
+    <div class="top-bar">Quiz Starts!</div>
+    <div class="quiz">6 + 2 = ?</div>
+    <div class="quiz">6 + 12 = ?</div>
+    <div class="play">
+        <p>
+        <button style="background: url('images/number1.png');background-size: cover;"></button>
+        <button style="background: url('images/number2.png');background-size: cover;"></button>
+        <button style="background: url('images/number3.png');background-size: cover;"></button>
+        <br>
+        <button style="background: url('images/number4.png');background-size: cover;"></button>
+        <button style="background: url('images/number5.png');background-size: cover;"></button>
+        <button style="background: url('images/number6.png');background-size: cover;"></button>
+        <br>
+        <button style="background: url('images/number7.png');background-size: cover;"></button>
+        <button style="background: url('images/number8.png');background-size: cover;"></button>
+        <button style="background: url('images/number9.png');background-size: cover;"></button>
+        <br>
+        <button style="background: url('')"></button>
+        <button style="background: url('images/number0.png');background-size: cover;"></button>
+        <button class="enter" style="background: url('images/enter.png');background-size: cover;"></button>
+        </p>
+    </div>
+</div>
+</body>
+</html>
